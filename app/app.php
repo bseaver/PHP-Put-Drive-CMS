@@ -22,6 +22,10 @@
         return $app['twig']->render('breweries.html.twig', ['data' => $data->data]);
     });
 
+    $app->get('/brewery/{id}', function($id) use ($app, $data) {
+        return $app['twig']->render('breweries.html.twig', ['data' => $data->data, 'id' => $id]);
+    });
+
     // Posted data route
     // The following is not yet working
     // It has been tested with:
