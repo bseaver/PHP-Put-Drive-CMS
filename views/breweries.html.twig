@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block page %}
+<div class='row'>
+    <div class='col-md-2'>
+        {% set array_index = (id | default(1)) - 1 %}
+        {% for brewery in data.Breweries %}
+            <a href="/brewery/{{ loop.index }}">{{ brewery.Name }}</a>
+        {% endfor %}
+    </div> <!-- End Col -->
+
+    <div class='col-md-10'>
+        {{ data.Breweries[array_index].Page | raw }}
+    </div> <!-- End Col -->
+</div> <!-- End Row -->
+{% endblock %}

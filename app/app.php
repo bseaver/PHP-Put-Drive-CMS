@@ -18,6 +18,10 @@
         return $app['twig']->render('welcome.html.twig', ['data' => $data->data]);
     });
 
+    $app->get('/breweries', function() use ($app, $data) {
+        return $app['twig']->render('breweries.html.twig', ['data' => $data->data]);
+    });
+
     // Posted data route
     // The following is not yet working
     // It has been tested with:
