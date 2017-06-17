@@ -26,6 +26,22 @@
         return $app['twig']->render('breweries.html.twig', ['data' => $data->data, 'id' => $id]);
     });
 
+    $app->get('/brews', function() use ($app, $data) {
+        return $app['twig']->render('brews.html.twig',
+            ['data' => $data->data,
+            'id' => $id,
+            'missingBeerHeader' => $data->missingBeerHeader($id)]
+        );
+    });
+
+    $app->get('/brew/{id}', function($id) use ($app, $data) {
+        return $app['twig']->render('brews.html.twig',
+            ['data' => $data->data,
+            'id' => $id,
+            'missingBeerHeader' => $data->missingBeerHeader($id)]
+        );
+    });
+
     // Posted data route
     // The following is not yet working
     // It has been tested with:
