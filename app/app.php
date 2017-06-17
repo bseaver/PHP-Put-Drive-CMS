@@ -1,6 +1,7 @@
 <?php
     date_default_timezone_set('America/Los_Angeles');
     require_once __DIR__.'/../vendor/autoload.php';
+    require_once __DIR__.'/../src/Data.php';
 
     $app = new Silex\Application();
     $app['debug'] = true;
@@ -9,7 +10,12 @@
         'twig.path' => __DIR__.'/../views'
     ));
 
-    $app->get('/', function() use ($app) {
+    // Retrieve website data from JSON file
+    $data = new Data('./../data.json');
+    print_r($data);
+
+    // Home route
+    $app->get('/', function() use ($app, $data) {
         return 'To Do';
     });
 
