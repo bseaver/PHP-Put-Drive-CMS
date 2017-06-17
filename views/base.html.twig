@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
+    <title>Daylight Breweries</title>
+</head>
+<body>
+    <div class='container'>
+        {% block header %}
+            <img src="{{ data.Logo_Url }}" alt="">
+            <a href='/'>Welcome</a>
+            <a href='/breweries'>Breweries</a>
+            <a href='/brews'>Brews</a>
+            <a href='/events'>Events</a>
+            <a href='/people'>People</a>
+            <br>
+            <br>
+        {% endblock %}
+
+        {% block page %}
+        {% endblock %}
+
+        {% block footer %}
+        {% endblock %}
+    </div>
+</body>
+</html>

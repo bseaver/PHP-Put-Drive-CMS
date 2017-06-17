@@ -12,11 +12,10 @@
 
     // Retrieve website data from JSON file
     $data = new Data('./../data.json');
-    print_r($data);
 
     // Home route
     $app->get('/', function() use ($app, $data) {
-        return 'To Do';
+        return $app['twig']->render('welcome.html.twig', ['data' => $data->data]);
     });
 
     // Posted data route
