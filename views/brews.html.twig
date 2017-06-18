@@ -9,7 +9,9 @@
                 {% for brew in data.Brews %}
                 <tr>
                     <td>
-                        <a href="/brew/{{ loop.index }}">{{ brew.Name }}</a>
+                        <a href="/brew/{{ loop.index }}" class="itemLink">
+                            <p>{{ brew.Name }}</p>
+                        </a>
                     </td>
                 </tr>
                 {% endfor %}

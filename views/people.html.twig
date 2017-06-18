@@ -9,11 +9,13 @@
                 {% for person in data.People %}
                 <tr>
                     <td>
-                        <a href="/person/{{ loop.index }}">
+                        <a href="/person/{{ loop.index }}" class="itemLink">
                             <p>
                                 {{ person.Name }}
                                 <br>
                                 {{ person.Title }}
+                                <br>
+                                <br>
                             </p>
                         </a>
                     </td>

@@ -3,16 +3,41 @@
 <head>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
     <title>Daylight Breweries</title>
+
+    <style media="screen">
+        .menuLink {
+            font-size: 2em;
+            padding-left: 1em;
+        }
+
+        .itemLink {
+            font-size: 1.3em;
+        }
+
+        .footerLink {
+            text-align: center;
+        }
+
+        .tablel-striped {
+            font-size: 1.3em;
+        }
+
+        img {
+            max-width: 50%;
+        }
+    </style>
+
 </head>
 <body>
     <div class='container'>
         {% block header %}
-            <img src="{{ data.Logo_Url }}" alt="">
-            <a href='/'>Welcome</a>
-            <a href='/breweries'>Breweries</a>
-            <a href='/brews'>Brews</a>
-            <a href='/events'>Events</a>
-            <a href='/people'>People</a>
+            <a href='/'>
+                <img src="{{ data.Logo_Url }}" alt="">
+            </a>
+            <a href='/breweries' class="menuLink">Breweries</a>
+            <a href='/brews' class="menuLink">Brews</a>
+            <a href='/events' class="menuLink">Events</a>
+            <a href='/people' class="menuLink">People</a>
             <br>
             <br>
         {% endblock %}
@@ -21,6 +46,14 @@
         {% endblock %}
 
         {% block footer %}
+            <footer>
+                <br>
+                <br>
+                <br>
+                <p class="footerLink">
+                    <a href="https://thedaylightstudio.com/">Site Design by The Daylight Studio</a>
+                </p>
+            </footer>
         {% endblock %}
     </div>
 </body>
