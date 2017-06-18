@@ -49,6 +49,14 @@
         );
     });
 
+    $app->get('/people', function() use ($app, $data) {
+        return $app['twig']->render('people.html.twig', ['data' => $data->data]);
+    });
+
+    $app->get('/person/{id}', function($id) use ($app, $data) {
+        return $app['twig']->render('people.html.twig', ['data' => $data->data, 'id' => $id]);
+    });
+
 
 
     // Posted data route

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block page %}
+    {% set array_index = (id | default(1)) - 1 %}
+
+    <div class='row'>
+        <div class='col-md-2'>
+            <table>
+                {% for person in data.People %}
+                <tr>
+                    <td>
+                        <a href="/person/{{ loop.index }}">
+                            <p>
+                                {{ person.Name }}
+                                <br>
+                                {{ person.Title }}
+                            </p>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div> <!-- End Col -->
+
+        <div class='col-md-10'>
+            {% set person = data.People[array_index] %}
+
+            {{ person.Bio | raw }}
+        </div> <!-- End Col -->
+    </div> <!-- End Row -->
+{% endblock %}
