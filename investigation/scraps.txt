@@ -1,6 +1,0 @@
-$input = file_get_contents('php://input');
-        echo '<pre>';
-        echo print_r($input);
-        echo '</pre>';
-
-        dd($input);
