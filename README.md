@@ -1,5 +1,4 @@
-# Explore receiving Google Drive CMS Published data in PHP
-
+# Power a Silex, Twig Website from Google Drive CMS
 
 #### By Benjamin T. Seaver and David Quisenberry
 
@@ -7,7 +6,16 @@
 
 Prototype PHP site whose data is supplied by Google Drive CMS see https://github.com/dmqpdx/google-drive-cms
 
-## Project Requirements:
+## Initial Goals:
+* Do the minimum PHP coding to demonstrate a website based upon data collected into a JSON object by Google Drive CMS.
+
+* Use PHP just enough to workaround limitations or faults in the data.
+
+* Use Silex for routing with 1's based array indices for dynamic routes.
+
+* Use Twig templates for each route.
+
+* Update the JSON with a post route.
 
 ## Setup Requirements
 * See https://secure.php.net/ for details on installing _PHP_.  Note: PHP is typically already installed on Mac.
@@ -16,7 +24,7 @@ Prototype PHP site whose data is supplied by Google Drive CMS see https://github
 ## Installation Instructions
 * Clone project.
 * From project root, run $ `composer install --prefer-source --no-interaction`
-* To run website using installed _PHP_ (better error messages):
+* To run website using installed _PHP_:
     * From `web` folder in project, run $ `php -S localhost:8000`.
     * In web browser open `localhost:8000`.
 
@@ -48,5 +56,6 @@ Prototype PHP site whose data is supplied by Google Drive CMS see https://github
 * Create Silex framework (web/index.php, app/app.php)
 * Create PUT or POST route to receive json input
 * Create GET routes to output data
+* Style a little to engage imagination
 
 End specifications
