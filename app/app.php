@@ -42,6 +42,15 @@
         );
     });
 
+    $app->get('/events', function() use ($app, $data) {
+        return $app['twig']->render('events.html.twig',
+            ['data' => $data->data,
+            'eventData' => $data->eventData($id)]
+        );
+    });
+
+
+
     // Posted data route
     // The following is not yet working
     // It has been tested with:
