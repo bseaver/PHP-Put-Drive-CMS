@@ -2,6 +2,7 @@
 
 {% block page %}
     {% set array_index = (id | default(1)) - 1 %}
+    {% set showAllEvents = false %}
 
     <div class='row'>
         <div class='col-md-2'>
@@ -16,7 +17,7 @@
                     <th>Where</th>
                 </tr>
                 {% for event in eventData %}
-                {% if false or event['Fit to Publish'] %}
+                {% if showAllEvents or event['Fit to Publish'] %}
                 <tr>
                     <td>
                         <p>{{ event['Name'] }}</p>
