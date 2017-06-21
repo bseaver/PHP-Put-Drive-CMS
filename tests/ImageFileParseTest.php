@@ -8,7 +8,7 @@
             $expected_results = array(
                 [
                     'input' => 'Now listen to my story',
-                    'result' =>['Now listen to my story'],
+                    'results' =>['Now listen to my story'],
                     'reasoning' => 'No img tag',
                 ],
             );
@@ -17,7 +17,7 @@
                 // Arrange
                 $actual_result = $expected_result;
                 // Act
-                $actual_result['result'] = ImageFile::parseImgSrc($actual_result['input']);
+                $actual_result['results'] = ImageFile::parseImgSrc($actual_result['input']);
                 // Assert
                 $this->assertEquals($expected_result, $actual_result);
             }
