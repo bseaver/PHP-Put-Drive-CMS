@@ -6,24 +6,67 @@
         function test_parse() {
             $expected_results = array(
                 [
+                    'delimiter' => ';',
+                    'returnDelimiter' => FALSE,
                     'input' => 'ABC,123',
-                    'onWhat' => ';',
-                    'result' =>'',
-                    'reasoning' => 'Empty result if the string to parse on is not found.',
+                    'input_after_parse' => '',
+                    'result' =>'ABC,123',
+                    'reasoning' => 'Result gets all if delimiter not found.',
                 ],
                 [
+                    'delimiter' => ';',
+                    'returnDelimiter' => FALSE,
+                    'input' => ';123',
+                    'input_after_parse' => ';123',
+                    'result' =>'',
+                    'reasoning' => 'Result gets nothing if input starts with delimiter.',
+                ],
+                [
+                    'delimiter' => ';',
+                    'returnDelimiter' => FALSE,
+                    'input' => 'ABC;123',
+                    'input_after_parse' => ';123',
+                    'result' =>'ABC',
+                    'reasoning' => 'Result gets up to delimiter.',
+                ],
+                [
+                    'delimiter' => ';',
+                    'returnDelimiter' => TRUE,
                     'input' => 'ABC,123',
-                    'onWhat' => ',',
-                    'result' =>'123',
-                    'reasoning' => 'Result found at end.',
+                    'input_after_parse' => '',
+                    'result' =>'ABC,123',
+                    'reasoning' => 'Result gets all if delimiter not found despite "return delimiter".',
+                ],
+                [
+                    'delimiter' => ';',
+                    'returnDelimiter' => TRUE,
+                    'input' => ';123',
+                    'input_after_parse' => '123',
+                    'result' =>';',
+                    'reasoning' => 'Result gets delimiter if input starts with delimiter and "return delimiter".',
+                ],
+                [
+                    'delimiter' => ';',
+                    'returnDelimiter' => TRUE,
+                    'input' => 'ABC;123',
+                    'input_after_parse' => '123',
+                    'result' =>'ABC;',
+                    'reasoning' => 'Result gets up through delimiter with "return delimiter".',
                 ],
             );
 
             foreach ($expected_results as $expected_result) {
                 // Arrange
                 $actual_result = $expected_result;
+                $actual_result['input_after_parse'] = $actual_result['input'];
+
                 // Act
-                $actual_result['result'] = ImageFile::parse($actual_result['input'], $actual_result['onWhat']);
+                $actual_result['result'] = ImageFile::parse(
+                        $actual_result['input_after_parse'],
+                        $actual_result['delimiter'],
+                        $actual_result['returnDelimiter']
+                    );
+
                 // Assert
                 $this->assertEquals($expected_result, $actual_result);
             }
@@ -33,7 +76,6 @@
 
         function test_parseImgSrc()
         {
-return;
             $expected_results = array(
                 [
                     'input' => 'Now listen to my story',
