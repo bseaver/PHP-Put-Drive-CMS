@@ -79,17 +79,14 @@
             $expected_results = array(
                 [
                     'input' => 'Now listen to my story',
-                    'results' =>['Now listen to my story'],
-                    'reasoning' => 'No img tag',
-                ],
-                [
-                    'input' => '<div><p ><span ></span></p></div><h2  ><span ></span></h2><h2  ><span ><img alt=\"\" src=\"https://lh6.googleusercontent.com/fqlXoiCjU_uICFFJ1\"  title=\"\"></span><span >Kevin',
                     'results' =>[
-                        '<div><p ><span ></span></p></div><h2  ><span ></span></h2><h2  ><span ><img alt=\"\" src=\"',
-                        'https://lh6.googleusercontent.com/fqlXoiCjU_uICFFJ1',
-                        '\"  title=\"\"></span><span >Kevin',
-                    ],
-                    'reasoning' => 'One image tag in middle',
+                            (object) [
+                                'contents' => 'Now listen to my story',
+                                'imgURI' => ''
+
+                            ]
+                        ],
+                    'reasoning' => 'No img tag',
                 ],
             );
 
