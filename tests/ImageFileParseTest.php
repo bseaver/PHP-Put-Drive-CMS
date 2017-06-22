@@ -88,6 +88,42 @@
                         ],
                     'reasoning' => 'No img tag',
                 ],
+                [
+                    'input' => '<div><p ><span ></span></p></div><h2  ><span ></span></h2><h2  ><span ><img alt=\"\" src=\"https://lh6.googleusercontent.com/fqlXoiCjU_uICFFJ1\"  title=\"\"></span><span >Kevin',
+                    'results' =>[
+                        (object) [
+                            'contents' => '<div><p ><span ></span></p></div><h2  ><span ></span></h2><h2  ><span ><img alt=\"\" src=\"',
+                            'imgURI' => '',
+                        ],
+                        (object) [
+                            'contents' => '',
+                            'imgURI' => 'https://lh6.googleusercontent.com/fqlXoiCjU_uICFFJ1',
+                        ],
+                        (object) [
+                            'contents' => '\"  title=\"\"></span><span >Kevin',
+                            'imgURI' => '',
+                        ],
+                    ],
+                    'reasoning' => 'One image tag in middle',
+                ],
+                [
+                    'input' => '<img alt=\"Picture of my dog Jaxon\" src=\"https://img.URI\"  title=\"Hi Mom!\">',
+                    'results' =>[
+                        (object) [
+                            'contents' => '<img alt=\"Picture of my dog Jaxon\" src=\"',
+                            'imgURI' => '',
+                        ],
+                        (object) [
+                            'contents' => '',
+                            'imgURI' => 'https://img.URI',
+                        ],
+                        (object) [
+                            'contents' => '\"  title=\"Hi Mom!\">',
+                            'imgURI' => '',
+                        ],
+                    ],
+                    'reasoning' => 'Input begins and ends with a single image tag.',
+                ],
             );
 
             foreach ($expected_results as $expected_result) {
