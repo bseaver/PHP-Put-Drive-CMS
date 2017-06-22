@@ -59,11 +59,13 @@ class ImageFile {
             }
 
             // Save contents not part of an image URI
-            $output[] = (object) ['imgURI' => '', 'contents' => $contents];
+            $output[] = (object) ['contents' => $content, 'imgURI' => ''];
 
             // Save image URI
             if ($imgURI) {
-                $output[] = (object) ['imgURI' => $contents, 'contents' => ''];
+                $output[] = (object) ['contents' => '', 'imgURI' => $imgURI];
+
+                // Prepend end of image tag contents to remaining input
                 $input = $imgTagContents . $input;
             }
         }
