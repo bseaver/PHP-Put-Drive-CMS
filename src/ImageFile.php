@@ -8,59 +8,64 @@
 *
 **/
 class ImageFile {
-    static function parseImgSrc($input) {
-
-        function parse(&$input, $onWhat, $includeOnWhat = FALSE) {
-            $pos = strpos($input, $onWhat);
-            if ($pos === FALSE) {
-                return '';
+    public static function parse(&$input, $delimeter, $returnDelimiter = FALSE) {
+        $pos = strpos($input, $delimeter);
+        if ($pos === FALSE) {
+            $result = $input;
+            $input = '';
+        } else {
+            if ($returnDelimiter) {
+                $pos += strlen($delimeter);
             }
-            if (!$includeOnWhat) {
-                $pos += strlen($onWhat);
-            }
-            $result = substr($input, $pos);
-            $input = substr($input, 0, $pos);
-            return $result;
+            $result = substr($input, 0, $pos);
+            $input = substr($input, $pos);
         }
+        return $result;
+    }
+
+    public static function parseImgSrc($input) {
 
         $output = [];
 
-        // Parse for ...<img ... src=\" https...googleusercontent.com... \" >...
+        // Parse for ...<img...src=\" https...googleusercontent.com... \" >...
         // https...googleusercontent.com... is downloadable
         // everything else is content
 
         while ($input) {
             $content = '';
-            $downloadable = FALSE;
 
-            $beginImgTag = parse($input, '<img');
-            if (!$beginImgTag) {
-                $content .= $input;
-                $input = '';
+            // Ignore through <img and add to general content
+            $content .= self::parse($input, '<img');
+
+            // Get any possible contents after <imb
+            $imgTagContents = self::parse($input, '>');
+
+            // If image end tag not found
+            if (!$input) {
+                $content .= $imgTagContents;
+                $imgTagContents = '';
             }
 
-            $imgTagContents = parse($beginImgTag, '>');
+            // Get image tag part through src=\" and add to general content
+            $content .= self::parse($imgTagContents, 'src=\"', TRUE);
+
+            // Get image URI
+            $imgURI = self::parse($imgTagContents, '\"');
+
+            // If no end delimiter, add result to general contents
             if (!$imgTagContents) {
-                $content .= $input . $beginImgTag;
-                $input = '';
+                $content .= $imgURI;
+                $imgURI = '';
             }
 
-            $imgSrc = parse($imgTagContents, 'src=\"');
-            if (!$imgSrc) {
-                $content .= $input . $beginImgTag . $imgTagContents;
-                $input = '';
-            }
+            // Save contents not part of an image URI
+            $output[] = (object) ['imgURI' => '', 'contents' => $contents];
 
-            $theRest = parse($imgSrc, '\"', TRUE);
-            if (!$theRest) {
-                $content .= $input . $beginImgTag . $imgTagContents . $imgSrc;
-                $input = '';
-            } else {
-                $input = $theRest;
-                $content = $imgSrc;
+            // Save image URI
+            if ($imgURI) {
+                $output[] = (object) ['imgURI' => $contents, 'contents' => ''];
+                $input = $imgTagContents . $input;
             }
-
-            $output[] = $content;
         }
         return $output;
     }
