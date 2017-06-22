@@ -3,13 +3,19 @@
 
     class ImageFileParseTest extends PHPUnit_Framework_TestCase
     {
-        function test_Parse() {
+        function test_parse() {
             $expected_results = array(
                 [
                     'input' => 'ABC,123',
                     'onWhat' => ';',
                     'result' =>'',
                     'reasoning' => 'Empty result if the string to parse on is not found.',
+                ],
+                [
+                    'input' => 'ABC,123',
+                    'onWhat' => ',',
+                    'result' =>'123',
+                    'reasoning' => 'Result found at end.',
                 ],
             );
 
@@ -27,6 +33,7 @@
 
         function test_parseImgSrc()
         {
+return;
             $expected_results = array(
                 [
                     'input' => 'Now listen to my story',
