@@ -11,7 +11,7 @@
     ));
 
     // Retrieve website data from JSON file
-    $data = new Data('./../data.json');
+    $data = new Data(__DIR__.'/../data/data.json');
 
     // Home route
     $app->get('/', function() use ($app, $data) {
