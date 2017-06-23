@@ -48,6 +48,35 @@
                 $this->assertEquals($expected_result, $actual_result);
             }
         }
+
+        function test_downloadImg() {
+            $expected_results = array(
+                [
+                    'imgURI' => 'https://vuejs.org/images/logo.png',
+                    'destinationFile' => 'test_downloadImg.jpeg',
+                    'result' => TRUE,
+                    'reasoning' => 'Download an image from vuejs.org'
+                ],
+            );
+
+            foreach ($expected_results as $expected_result) {
+                // Arrange
+                $actual_result = $expected_result;
+
+                // Act
+                $actual_result['result'] = GoogleUserContentImage::downloadImg(
+                        $actual_result['imgURI'], $actual_result['destinationFile']
+                    );
+
+                // Assert
+                $this->assertEquals($expected_result, $actual_result);
+
+                // Clean up
+                if ( file_exists($actual_result['destinationFile']) ) {
+                    unlink($actual_result['destinationFile']);
+                }
+            }
+        }
     }
 
 
