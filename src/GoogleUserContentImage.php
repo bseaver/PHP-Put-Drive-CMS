@@ -37,7 +37,7 @@ class GoogleUserContentImage {
 
         // Retrieve a valid image class
         $image = WideImage::loadFromFile($imgURI);
-        if ( !($image instanceof WideImage_PaletteImage) || !($image instanceof WideImage_TrueColorImage) ) {
+        if ( !($image instanceof WideImage_PaletteImage) & !($image instanceof WideImage_TrueColorImage) ) {
            return FALSE;
         }
 
