@@ -20,9 +20,9 @@ class SomePassword {
 
         for ($i=0; $i < $length; $i++) {
             if ($resources[$i] === $resource) {
-                $result = 401;
+                $result = max($result, 401);
                 if ($users[$i] === $user) {
-                    $result = 403;
+                    $result = max($result, 403);
                     if ($passwords[$i] === $password) {
                         $result = 200;
                         break;
