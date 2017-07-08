@@ -1,7 +1,9 @@
 <?php
     date_default_timezone_set('America/Los_Angeles');
     require_once __DIR__.'/../vendor/autoload.php';
-    require_once __DIR__.'/../src/Data.php';
+    require_once __DIR__.'/../src/ImportJson.php';
+    use Symfony\Component\HttpFoundation\Request;
+    use Symfony\Component\HttpFoundation\Response;
 
     $app = new Silex\Application();
     $app['debug'] = true;
@@ -11,75 +13,124 @@
     ));
 
     // Retrieve website data from JSON file
-    $data = new Data(__DIR__.'/../data/data.json');
+    $data = new ImportJson(__DIR__.'/../data/data.json');
 
     // Home route
     $app->get('/', function() use ($app, $data) {
         return $app['twig']->render('welcome.html.twig', ['data' => $data->data]);
     });
 
-    $app->get('/breweries', function() use ($app, $data) {
-        return $app['twig']->render('breweries.html.twig', ['data' => $data->data]);
+    $app->get('/generations', function() use ($app, $data) {
+        return $app['twig']->render('generations.html.twig', ['data' => $data->data]);
     });
 
-    $app->get('/brewery/{id}', function($id) use ($app, $data) {
-        return $app['twig']->render('breweries.html.twig', ['data' => $data->data, 'id' => $id]);
+    $app->get('/generation/{id}', function($id) use ($app, $data) {
+        return $app['twig']->render('generations.html.twig', ['data' => $data->data, 'id' => $id]);
     });
 
-    $app->get('/brews', function() use ($app, $data) {
-        return $app['twig']->render('brews.html.twig',
-            ['data' => $data->data,
-            'id' => $id,
-            'missingBeerHeader' => $data->missingBeerHeader($id)]
+    $app->post('/data', function(Request $request) use($app) {
+    })->before(function (Request $request) {
+        require_once __DIR__.'/../src/SomePassword.php';
+        
+        // Test (assuming resource=data, user=admin, password=password and sendfile.json exists at root)
+        // curl -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ=" -H "Content-Type: application/json" -X POST -d @sendfile.json localhost:8888/data
+        $resource = 'data';
+        $user = $request->getUser();
+        $password = $request->getPassword();
+        $contentType = $request->getContentType();
+
+        // Check resource, user and pw
+        // If match, expect statusCode of 200
+        $pws = parse_ini_file(__DIR__ . '/../passwords.ini');
+
+        $statusCode = SomePassword::getStatusCode(
+            $pws['resources'], $pws['users'], $pws['passwords'],
+            $resource, $user, $password
         );
+
+        // Only json supported at this point
+        if ($statusCode === 200 && $contentType !== 'json') {
+            $statusCode = 501;
+        }
+
+        if ($statusCode === 200 && $contentType === 'json') {
+            $input = file_get_contents('php://input');
+            $file = __DIR__ . '/../data/' . $resource;
+            $newFile = $file . '.new';
+            $targetFile = $file . '.json';
+            $oldFile = $file . '.old';
+
+            // Delete any "new" file
+            if ( file_exists($newFile) ) {
+                unlink($newFile);
+            }
+            if ( file_exists($newFile) ) {
+                $statusCode = 500;
+            }
+
+            // Save "new" file and verify valid json
+            if ($statusCode === 200) {
+                file_put_contents($newFile, $input);
+                $contents = file_get_contents($newFile);
+                $testData = json_decode($contents);
+                if (!$testData) {
+                    $statusCode = 500;
+                }
+            }
+
+            // Move previous "target" file to "old" file
+            if ($statusCode === 200 && file_exists($targetFile)) {
+                rename($targetFile, $oldFile);
+                if (file_exists($targetFile) || !file_exists($oldFile)) {
+                    $statusCode = 500;
+                }
+            }
+
+            // Move "new" file to "target" file
+            if ($statusCode === 200) {
+                rename($newFile, $targetFile);
+                if (file_exists($newFile) || !file_exists($targetFile)) {
+                    $statusCode = 500;
+                }
+            }
+
+            // End of processing
+            if ($statusCode === 200) {
+                $statusCode = 201;
+            }
+        }
+
+        $statusMessage = '';
+        switch ($statusCode) {
+            case 201:
+                $statusMessage = 'Upload processed';
+                break;
+
+            case 400:
+                $statusMessage = 'Unknown resource';
+                break;
+
+            case 401:
+                $statusMessage = 'Unknown user';
+                break;
+
+            case 403:
+                $statusMessage = 'Invalid user or password';
+                break;
+
+            case 501:
+                $statusMessage = 'Unsupported content type';
+                break;
+
+            default:
+                $statusMessage = 'Unspecified error!';
+                break;
+        }
+
+        if ($statusMessage) {
+            return new Response($statusMessage, $statusCode);
+        }
     });
-
-    $app->get('/brew/{id}', function($id) use ($app, $data) {
-        return $app['twig']->render('brews.html.twig',
-            ['data' => $data->data,
-            'id' => $id,
-            'missingBeerHeader' => $data->missingBeerHeader($id)]
-        );
-    });
-
-    $app->get('/events', function() use ($app, $data) {
-        return $app['twig']->render('events.html.twig',
-            ['data' => $data->data,
-            'eventData' => $data->eventData($id)]
-        );
-    });
-
-    $app->get('/people', function() use ($app, $data) {
-        return $app['twig']->render('people.html.twig', ['data' => $data->data]);
-    });
-
-    $app->get('/person/{id}', function($id) use ($app, $data) {
-        return $app['twig']->render('people.html.twig', ['data' => $data->data, 'id' => $id]);
-    });
-
-
-
-    // Posted data route
-    // The following is not yet working
-    // It has been tested with:
-    // curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyzabc"}' http://localhost:8000/post
-
-    $app->post('/post', function() use($app) {
-        $input = file_get_contents('php://input');
-
-        // To Do:
-        // verify proper function on deployed site
-        // support authentication
-        // remove diagnostics
-
-        // echo '<pre>';
-        // echo print_r($input);
-        // echo '</pre>';
-
-        $output = '<pre>' . print_r($input, true) . '</pre>';
-        return $output;
-    });
-
 
     return $app;
 ?>
