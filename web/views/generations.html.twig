@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block page %}
+    {% set array_index = (id | default(1)) - 1 %}
+
+    <div class='row'>
+        <div class='col-md-3'>
+            <table>
+                {% for generation in data.generations %}
+                <tr>
+                    <td>
+                        <a href="/generation/{{ loop.index }}" class="itemLink">
+                            <p>{{ generation.year_range }}</p>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div> <!-- End Col -->
+
+        <div class='col-md-9'>
+            {% set generation = data.generations[array_index] %}
+
+            {{ generation.page | raw }}
+
+            <br><br>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table tablel-striped">
+                        <tr>
+                            <th>Body Style</th>
+                        </tr>
+                        {% for body_style in data.generations[array_index].body_styles %}
+                        <tr>
+                            <td><p>{{ body_style }}</p></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+
+                <div class="col-md-6">
+                    <table class="table tablel-striped">
+                        <tr>
+                            <th>Powertrains</th>
+                        </tr>
+                        {% for engine_model in data.generations[array_index].engine_models %}
+                        <tr>
+                            <td><p>{{ engine_model }}</p></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div> <!-- End Col -->
+    </div> <!-- End Row -->
+{% endblock %}
