@@ -2,7 +2,7 @@
 <html>
 <head>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css'>
-    <title>Daylight Breweries</title>
+    <title>{{ data.site_title }}</title>
 
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
@@ -10,12 +10,9 @@
     <div class='container'>
         {% block header %}
             <a href='/'>
-                <img src="{{ data.Logo_Url }}" alt="">
+                <img src="{{ data.site_url }}" alt="">
             </a>
-            <a href='/breweries' class="menuLink">Breweries</a>
-            <a href='/brews' class="menuLink">Brews</a>
-            <a href='/events' class="menuLink">Events</a>
-            <a href='/people' class="menuLink">People</a>
+            <a href='/generations' class="menuLink">Generations</a>
             <br>
             <br>
         {% endblock %}
@@ -29,7 +26,7 @@
                 <br>
                 <br>
                 <p class="footerLink">
-                    <a href="https://thedaylightstudio.com/">Site Design by The Daylight Studio</a>
+                    <a href="https://github.com/bseaver/PHP-Put-Drive-CMS" target="_blank">Source by Benjamin T. Seaver</a>
                 </p>
             </footer>
         {% endblock %}

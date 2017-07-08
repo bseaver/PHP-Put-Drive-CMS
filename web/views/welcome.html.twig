@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block page %}
-    {{ data.Welcome_Message | raw }}
+    <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-9">
+            {{ data.home_page | raw }}
+        </div>
+    </div>
 {% endblock %}
