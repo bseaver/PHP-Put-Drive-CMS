@@ -31,7 +31,7 @@
     $app->post('/data', function(Request $request) use($app) {
     })->before(function (Request $request) {
         require_once __DIR__.'/../src/SomePassword.php';
-        
+
         // Test (assuming resource=data, user=admin, password=password and sendfile.json exists at root)
         // curl -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ=" -H "Content-Type: application/json" -X POST -d @sendfile.json localhost:8888/data
         $resource = 'data';
@@ -65,7 +65,7 @@
                 unlink($newFile);
             }
             if ( file_exists($newFile) ) {
-                $statusCode = 500;
+                $statusCode = 551;
             }
 
             // Save "new" file and verify valid json
@@ -74,7 +74,7 @@
                 $contents = file_get_contents($newFile);
                 $testData = json_decode($contents);
                 if (!$testData) {
-                    $statusCode = 500;
+                    $statusCode = 552;
                 }
             }
 
@@ -82,15 +82,15 @@
             if ($statusCode === 200 && file_exists($targetFile)) {
                 rename($targetFile, $oldFile);
                 if (file_exists($targetFile) || !file_exists($oldFile)) {
-                    $statusCode = 500;
+                    $statusCode = 553;
                 }
             }
 
-            // Move "new" file to "target" file
+            // Copy "new" file to "target" file
             if ($statusCode === 200) {
-                rename($newFile, $targetFile);
-                if (file_exists($newFile) || !file_exists($targetFile)) {
-                    $statusCode = 500;
+                copy($newFile, $targetFile);
+                if (!file_exists($newFile) || !file_exists($targetFile)) {
+                    $statusCode = 554;
                 }
             }
 
@@ -100,36 +100,38 @@
             }
         }
 
-        $statusMessage = '';
+        $statusMessage = $statusCode . ': ';
         switch ($statusCode) {
             case 201:
-                $statusMessage = 'Upload processed';
+                $statusMessage .= ' Upload processed';
                 break;
 
             case 400:
-                $statusMessage = 'Unknown resource';
+                $statusMessage .= ' Unknown resource';
                 break;
 
             case 401:
-                $statusMessage = 'Unknown user';
+                $statusMessage .= ' Unknown user';
                 break;
 
             case 403:
-                $statusMessage = 'Invalid user or password';
+                $statusMessage .= ' Invalid user or password';
+                break;
+
+            case 500:
+                $statusMessage .= ' Unspecified server error';
                 break;
 
             case 501:
-                $statusMessage = 'Unsupported content type';
+                $statusMessage .= ' Unsupported content type';
                 break;
 
             default:
-                $statusMessage = 'Unspecified error!';
+                $statusMessage .= ' Processing error!';
                 break;
         }
 
-        if ($statusMessage) {
-            return new Response($statusMessage, $statusCode);
-        }
+        return new Response($statusMessage, $statusCode);
     });
 
     return $app;
