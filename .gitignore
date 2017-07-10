@@ -1,4 +1,19 @@
+# The following folder is built by the command: composer install
 vendor/
+
+# The following folder is manually created - see README.md
+# Its presence is required for caching google user content images.
 lib/
-data/
-scrap_heap/
+
+# The following folder is used for storing downloaded cached images.
+web/cached_images/*.jpeg
+
+# The following folder and file types are where posted content is stored.
+data/*.json
+data/*.new
+data/*.old
+data/*.tmp
+
+# The following file is where you can save content for posting to your local development website.
+# See README.md for more details
+sendfile.json
