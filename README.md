@@ -1,21 +1,19 @@
 # Power a Silex, Twig Website from Google Drive CMS
 
-#### By Benjamin T. Seaver and David Quisenberry
+#### By Benjamin T. Seaver
 
 ## Description
 
-Prototype PHP site whose data is supplied by Google Drive CMS see https://github.com/dmqpdx/google-drive-cms
+Prototype PHP site whose data is supplied by Google Drive CMS see https://github.com/bseaver/google-drive-cms
 
 ## Initial Goals:
 * Do the minimum PHP coding to demonstrate a website based upon data collected into a JSON object by Google Drive CMS.
-
-* Use PHP just enough to workaround limitations or faults in the data.
 
 * Use Silex for routing with 1's based array indices for dynamic routes.
 
 * Use Twig templates for each route.
 
-* Update the JSON with a post route.
+* Update the website's content with a post route.
 
 ## Setup Requirements
 * See https://secure.php.net/ for details on installing _PHP_.  Note: PHP is typically already installed on Mac.
@@ -45,7 +43,7 @@ Prototype PHP site whose data is supplied by Google Drive CMS see https://github
 * Git
 
 ## Copyright (c)
-* 2017 Benjamin T. Seaver, David Quisenberry
+* 2017 Benjamin T. Seaver
 
 ## License
 * MIT
@@ -57,5 +55,6 @@ Prototype PHP site whose data is supplied by Google Drive CMS see https://github
 * Create PUT or POST route to receive json input
 * Create GET routes to output data
 * Style a little to engage imagination
+* Cache images stored on Google User Content on website to avoid rate limits
 
 End specifications
