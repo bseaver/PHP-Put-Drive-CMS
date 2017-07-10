@@ -1,5 +1,5 @@
 <?php
-require_once './lib/wideimage/lib/WideImage.php';
+require_once __DIR__ . '/../lib/wideimage/lib/WideImage.php';
 
 class GoogleUserContentImage {
     public static function isGoogleUserContentImage($imgURI) {
